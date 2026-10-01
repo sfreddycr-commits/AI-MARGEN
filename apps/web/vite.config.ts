@@ -2,6 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// `vite build` siempre produce un bundle de producción, aunque el entorno tenga NODE_ENV=test
+// (como el job de integración de CI). Sin esto, import.meta.env.DEV sería true en el build.
+if (process.argv.includes('build')) process.env.NODE_ENV = 'production';
+
 // En desarrollo, /api se redirige a la API local para que las cookies sean del mismo origen.
 export default defineConfig({
   plugins: [

@@ -52,6 +52,8 @@ COMMIT/SHA:     ver `git log` (commit "Etapa 1: fundación")
 - `REGEXP` de moneda aceptaba minúsculas por la collation `_ai_ci` → `REGEXP_LIKE(..., 'c')` y nota en convenciones.
 - Errores de plugins registrados antes del manejador central no salían en español → manejador primero.
 - Fuente de fontsource sin features OpenType ("AImargen" se leía "Almargen") → Inter autoalojada con `cv08`.
+- En CI (`NODE_ENV=test`) Vite generaba un bundle de desarrollo (sin service worker y con el catálogo
+  de componentes) → `vite build` fuerza `NODE_ENV=production`. Detectado por el E2E en CI.
 
 ## Bugs abiertos
 
