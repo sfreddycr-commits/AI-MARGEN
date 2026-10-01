@@ -4,7 +4,11 @@ import type { FastifyInstance } from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
+import rateLimit from '@fastify/rate-limit';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
@@ -12,6 +16,9 @@ import {
 import { APP_VERSION, type AppConfig } from './core/config/config.js';
 import type { Db } from './core/db/db.js';
 import { registerErrorHandler } from './core/http/error-handler.js';
+import { buildRequestContext } from './core/http/request-context.js';
+import { createMetrics, instrumentHttp, type Metrics } from './core/observability/metrics.js';
+import { createAuditService } from './core/audit/audit.service.js';
 import { createSystemModel } from './modules/system/system.model.js';
 import { createSystemController } from './modules/system/system.controller.js';
 import { systemRoutes } from './modules/system/system.routes.js';
@@ -19,13 +26,22 @@ import { systemRoutes } from './modules/system/system.routes.js';
 export interface BuildAppDeps {
   config: AppConfig;
   db: Db;
+  /** Permite inyectar métricas en pruebas. */
+  metrics?: Metrics;
 }
 
 /**
  * Construye la app Fastify sin escuchar en un puerto (permite pruebas con `app.inject`).
- * Cada módulo se arma como: model(db) → controller(model) → routes(controller).
+ * Cada módulo se arma como: model(db) → controller(model, servicios) → routes(controller).
  */
-export async function buildApp({ config, db }: BuildAppDeps): Promise<FastifyInstance> {
+export async function buildApp({
+  config,
+  db,
+  metrics: injected,
+}: BuildAppDeps): Promise<FastifyInstance> {
+  const isProduction = config.NODE_ENV === 'production';
+  const metrics = injected ?? createMetrics(config.NODE_ENV !== 'test');
+
   const app = Fastify({
     logger: {
       level: config.LOG_LEVEL,
@@ -56,9 +72,17 @@ export async function buildApp({ config, db }: BuildAppDeps): Promise<FastifyIns
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 
+  // Antes de cualquier plugin: los contextos hijos heredan el manejador al crearse.
+  registerErrorHandler(app, metrics);
+
+  app.decorateRequest('ctx', null as never);
+  app.addHook('onRequest', async (req) => {
+    req.ctx = buildRequestContext(req);
+  });
   app.addHook('onSend', async (req, reply) => {
     reply.header('x-request-id', req.id);
   });
+  instrumentHttp(app, metrics);
 
   await app.register(helmet, {
     // La API solo devuelve JSON; la CSP de la web la define el servidor estático.
@@ -71,18 +95,58 @@ export async function buildApp({ config, db }: BuildAppDeps): Promise<FastifyIns
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   });
   await app.register(cookie);
+  await app.register(rateLimit, {
+    global: true,
+    max: config.RATE_LIMIT_MAX,
+    timeWindow: '1 minute',
+    // Se lanza como error para que el manejador central responda en español con requestId.
+    errorResponseBuilder: (_req, ctx) =>
+      Object.assign(new Error('rate limited'), { statusCode: ctx.statusCode }),
+    // Redis se conecta en Etapa 17 si hay varias instancias; en memoria es suficiente para una.
+  });
 
-  registerErrorHandler(app);
+  const docsEnabled = config.API_DOCS ?? !isProduction;
+  if (docsEnabled) {
+    await app.register(swagger, {
+      openapi: {
+        info: {
+          title: 'AImargen API',
+          description: 'API v1 de AImargen. Montos como string decimal. Errores en español.',
+          version: APP_VERSION,
+        },
+        servers: [{ url: '/' }],
+      },
+      transform: jsonSchemaTransform,
+    });
+    await app.register(swaggerUi, { routePrefix: '/api/docs' });
+  }
+
+  // --- Servicios compartidos ---
+  const audit = createAuditService(db);
+  app.decorate('audit', audit);
 
   // --- Módulos ---
   const systemController = createSystemController(createSystemModel(db), APP_VERSION);
 
   await app.register(
     async (v1) => {
-      await v1.register(systemRoutes(systemController));
+      await v1.register(
+        systemRoutes({
+          controller: systemController,
+          metrics,
+          metricsToken: config.METRICS_TOKEN,
+          isProduction,
+        }),
+      );
     },
     { prefix: '/api/v1' },
   );
 
   return app;
+}
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    audit: ReturnType<typeof createAuditService>;
+  }
 }

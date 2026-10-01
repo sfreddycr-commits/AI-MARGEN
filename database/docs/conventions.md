@@ -54,3 +54,11 @@ CONSTRAINT fk_<tabla>_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 ## Verificación automática
 
 `pnpm db:check` valida las reglas C1–C7 (ver `scripts/lib/conventions.ts`) y corre en CI.
+
+## Notas de collation
+
+La collation por defecto (`utf8mb4_0900_ai_ci`) es **insensible a mayúsculas y acentos**:
+
+- Útil para `UNIQUE` de correos y nombres (`Ana@x.com` = `ana@x.com`).
+- `REGEXP` también es insensible: para validar formato estricto use
+  `REGEXP_LIKE(col, '^[A-Z]{3}$', 'c')` (ver `ck_tenants_currency`).

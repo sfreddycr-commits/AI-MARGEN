@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import mysql from 'mysql2/promise';
 import type { Connection, RowDataPacket } from 'mysql2/promise';
-import { connectionFromEnv, migrate } from '../scripts/lib/index.js';
+import { connectionFromEnv, loadMigrationFiles, migrate } from '../scripts/lib/index.js';
 
 const opts = connectionFromEnv(process.env.DB_NAME_TEST ?? 'aimargen_test');
 let conn: Connection;
@@ -30,7 +30,12 @@ describe('migraciones (MySQL real)', () => {
   it('sp_system_ping responde con la versión del esquema', async () => {
     const [sets] = await conn.query<RowDataPacket[][]>('CALL sp_system_ping()');
     const row = sets[0]?.[0];
-    expect(row?.schema_version).toBe('0001');
+    const latest = (await loadMigrationFiles())
+      .filter((f) => f.kind === 'versioned')
+      .map((f) => f.version)
+      .sort()
+      .at(-1);
+    expect(row?.schema_version).toBe(latest);
     expect(row?.db_time).toBeInstanceOf(Date);
   });
 

@@ -1,75 +1,73 @@
+import { Button, Notice, Skeleton, StatusBadge } from '../../../core/ui';
+import { Page } from '../../../core/shell/views/Page';
 import { useReadiness } from '../js/use-readiness';
 import styles from '../css/system-status.module.css';
 
 const LABELS: Record<string, string> = {
-  api: 'API',
+  api: 'Servidor de la aplicación',
   database: 'Base de datos',
-  migrations: 'Migraciones',
+  migrations: 'Estructura de datos al día',
 };
 
-function Badge({ ok }: { ok: boolean }) {
-  return (
-    <span className={`${styles.badge} ${ok ? styles.ok : styles.fail}`}>
-      <span aria-hidden="true">{ok ? '✓' : '✕'}</span>
-      {ok ? 'Operativo' : 'Con fallas'}
-    </span>
-  );
-}
-
 /**
- * Vista de estado del sistema (Etapa 0). Verifica de punta a punta web → API → SP → MySQL.
- * Se mantiene como página interna de diagnóstico (/estado).
+ * Estado del sistema: verifica de punta a punta web → API → SP → MySQL.
+ * Útil para soporte y para diagnosticar problemas de conexión.
  */
 export function SystemStatusView() {
   const { data, error, isPending, refetch, isFetching } = useReadiness();
-  const checks = data?.checks ?? {};
-  const apiOk = !!data;
+  const rows: Array<[string, boolean]> = data
+    ? [
+        ['api', true],
+        ...Object.entries(data.checks ?? {}).map(([k, v]) => [k, v === 'ok'] as [string, boolean]),
+      ]
+    : [];
 
   return (
-    <main className={styles.page}>
-      <section className={styles.card} aria-labelledby="status-title" aria-busy={isPending}>
-        <h1 id="status-title" className={styles.brand}>
-          AI<span className={styles.brandAccent}>margen</span>
-        </h1>
-        <p className={styles.claim}>Sepa cuánto cuesta. Sepa cuánto gana.</p>
+    <Page
+      title="Estado del sistema"
+      description="Comprueba que la aplicación, la base de datos y su estructura respondan correctamente."
+      back="/app/mas"
+      action={
+        <Button
+          variant="secondary"
+          icon="refresh"
+          onClick={() => void refetch()}
+          loading={isFetching}
+        >
+          Verificar
+        </Button>
+      }
+    >
+      {error && (
+        <Notice tone="danger" title="No se pudo verificar el sistema">
+          {error.message}
+        </Notice>
+      )}
 
-        {isPending ? (
-          <p role="status">Verificando el sistema…</p>
-        ) : (
-          <ul className={styles.list}>
-            <li className={styles.row}>
-              {LABELS.api}
-              <Badge ok={apiOk} />
-            </li>
-            {Object.entries(checks).map(([k, v]) => (
+      <ul className={styles.list} aria-busy={isPending}>
+        {isPending
+          ? [0, 1, 2].map((i) => (
+              <li key={i} className={styles.row}>
+                <Skeleton width="50%" />
+                <Skeleton width={90} height={22} radius={999} />
+              </li>
+            ))
+          : rows.map(([k, ok]) => (
               <li key={k} className={styles.row}>
-                {LABELS[k] ?? k}
-                <Badge ok={v === 'ok'} />
+                <span>{LABELS[k] ?? k}</span>
+                <StatusBadge tone={ok ? 'positive' : 'danger'}>
+                  {ok ? 'Operativo' : 'Con fallas'}
+                </StatusBadge>
               </li>
             ))}
-          </ul>
-        )}
+      </ul>
 
-        {error && (
-          <p role="alert" className={styles.meta}>
-            {error.message}
-          </p>
-        )}
-        {data && (
-          <p className={styles.meta}>
-            Versión {data.version} · {new Date(data.time).toLocaleString('es-CR')}
-          </p>
-        )}
-
-        <button
-          type="button"
-          className={styles.retry}
-          onClick={() => void refetch()}
-          disabled={isFetching}
-        >
-          {isFetching ? 'Verificando…' : 'Verificar de nuevo'}
-        </button>
-      </section>
-    </main>
+      {data && (
+        <p className={styles.meta}>
+          Versión {data.version}. Última verificación el{' '}
+          {new Date(data.time).toLocaleString('es-CR', { dateStyle: 'long', timeStyle: 'short' })}
+        </p>
+      )}
+    </Page>
   );
 }

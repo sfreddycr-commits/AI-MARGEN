@@ -47,6 +47,15 @@ const schema = z.object({
   DB_PASSWORD: z.string().default(''),
   DB_NAME: z.string().min(1),
   DB_POOL_SIZE: z.coerce.number().int().positive().default(10),
+  /** Token para GET /metrics. Si está vacío, /metrics solo responde fuera de producción. */
+  METRICS_TOKEN: z.string().default(''),
+  /** Límite global de solicitudes por IP y minuto (las rutas de auth tienen límites propios). */
+  RATE_LIMIT_MAX: z.coerce.number().int().positive().default(300),
+  /** Documentación OpenAPI en /api/docs. Por defecto desactivada en producción. */
+  API_DOCS: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform((v) => (v === undefined ? undefined : v === 'true')),
 });
 
 export type AppConfig = z.infer<typeof schema>;

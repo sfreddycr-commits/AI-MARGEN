@@ -7,7 +7,14 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default tseslint.config(
   {
-    ignores: ['**/dist/**', '**/coverage/**', '**/node_modules/**', '**/dev-dist/**'],
+    ignores: [
+      '**/dist/**',
+      '**/coverage/**',
+      '**/node_modules/**',
+      '**/dev-dist/**',
+      'playwright-report/**',
+      'test-results/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -27,9 +34,10 @@ export default tseslint.config(
     files: ['apps/api/**/*.ts', 'database/**/*.ts', 'packages/**/*.ts', '*.config.{js,ts}'],
     languageOptions: { globals: globals.node },
   },
-  // Scripts de CLI pueden escribir a consola
+  // Scripts de CLI (Node) pueden escribir a consola
   {
-    files: ['database/scripts/**/*.ts'],
+    files: ['database/scripts/**/*.ts', 'scripts/**/*.{js,mjs}'],
+    languageOptions: { globals: globals.node },
     rules: { 'no-console': 'off' },
   },
   // Web: React

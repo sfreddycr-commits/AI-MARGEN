@@ -21,15 +21,18 @@
     "test:integration": "vitest run --project integration",
     "db:migrate": "tsx database/scripts/migrate.ts",
     "db:check": "tsx database/scripts/check-conventions.ts",
-    "db:reset": "tsx database/scripts/migrate.ts --reset"
+    "db:reset": "tsx database/scripts/migrate.ts --reset",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.63.0",
     "eslint": "^9.39.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
     "prettier": "^3.9.9",
+    "sharp": "^0.35.5",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
     "tsx": "^4.23.15",

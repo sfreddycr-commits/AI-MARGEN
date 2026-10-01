@@ -65,3 +65,21 @@ packages/config             → configuración compartida (tsconfig, eslint).
 - Concurrencia optimista con `row_version`.
 
 Detalle en ADR-0007.
+
+## Web: estructura de `core/` (Etapa 1)
+
+| Carpeta       | Contenido                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------- |
+| `core/css`    | `tokens.css` (único lugar con colores literales), `base.css`, `fonts.css`                      |
+| `core/fonts`  | Inter 4 variable autoalojada (offline)                                                         |
+| `core/ui`     | design system: `views/` componentes, `css/` estilos, `js/` hooks/utilidades                    |
+| `core/shell`  | AppShell (sidebar desktop, barra inferior móvil), Page, "Más", aviso offline, actualizador PWA |
+| `core/router` | rutas y registro de navegación por etapas (ADR-0011)                                           |
+| `core/js`     | cliente API, formato CR (₡), IndexedDB local, motor de sincronización, preferencias            |
+
+## API: servicios transversales (Etapa 1)
+
+- `core/observability`: métricas Prometheus en `/api/v1/metrics` (con token; oculto en producción sin token).
+- `core/http/request-context`: `req.ctx` con requestId, IP, user agent; tenant/usuario se completan en Etapa 3.
+- `core/audit`: `app.audit.log(ctx, entry)` → `sp_audit_log_create`, con redacción de campos sensibles.
+- OpenAPI en `/api/docs` fuera de producción. Rate limit global (300/min por IP), health excluido.

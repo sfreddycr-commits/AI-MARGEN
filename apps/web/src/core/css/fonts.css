@@ -1,0 +1,12 @@
+/*
+ * Inter 4 (variable: wght + opsz), subconjunto latino + ₡ generado con pyftsubset
+ * conservando todas las features OpenType (cv08, tnum…). Licencia OFL: core/fonts/Inter-LICENSE.txt.
+ * Se sirve desde el propio dominio para funcionar offline (PWA).
+ */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/inter-aimargen-latin.woff2') format('woff2');
+}

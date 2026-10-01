@@ -1,4 +1,4 @@
-import { connectionFromEnv, migrate, resetDatabase } from './lib/index.js';
+import { checkConventions, connectionFromEnv, migrate, resetDatabase } from './lib/index.js';
 
 /**
  * Uso:
@@ -14,6 +14,12 @@ const reset = args.includes('--reset');
 const conn = connectionFromEnv(database);
 
 try {
+  // No se aplica nada que viole las convenciones (C1–C7).
+  const issues = await checkConventions();
+  if (issues.length) {
+    for (const i of issues) console.error(`  [${i.rule}] ${i.file}: ${i.message}`);
+    throw new Error('Migración cancelada: corrija las convenciones (pnpm db:check).');
+  }
   if (reset) {
     await resetDatabase(conn);
     console.log(`↺ Base ${conn.database} recreada`);

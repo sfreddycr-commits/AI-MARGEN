@@ -15,4 +15,4 @@ Pipeline: `.github/workflows/ci.yml`. Cualquier gate en rojo bloquea merge y des
 | 9   | Dependency audit (high/critical)                      | `pnpm audit --audit-level high`                    | Etapa 0                   |
 | 10  | Security scan (CodeQL)                                | workflow `codeql.yml`                              | Etapa 0                   |
 | 11  | Pruebas cross-tenant                                  | `pnpm test:integration` (suite `tenant-isolation`) | Etapa 3                   |
-| 12  | E2E + visual 390×844 / 1440×900                       | Playwright                                         | Etapa 2                   |
+| 12  | E2E + visual 390×844 / 1440×900                       | `pnpm test:e2e` (Playwright)                       | Etapa 1                   |

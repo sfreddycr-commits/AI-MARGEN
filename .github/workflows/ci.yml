@@ -17,9 +17,9 @@ jobs:
     name: Calidad (lint, tipos, unit, build)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -42,7 +42,7 @@ jobs:
         run: pnpm audit --audit-level high --prod
 
       - name: Artefactos de build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-${{ github.sha }}
           path: |
@@ -75,9 +75,9 @@ jobs:
       DB_NAME: aimargen_ci_dev
       DB_NAME_TEST: aimargen_test
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -100,3 +100,19 @@ jobs:
 
       - name: 7. Integration tests
         run: pnpm test:integration
+
+      - name: 12. Build para E2E
+        run: pnpm build
+      - name: Instalar Chromium de Playwright
+        run: pnpm exec playwright install --with-deps chromium
+      - name: 12. E2E + QA visual (390×844 y 1440×900)
+        run: pnpm test:e2e
+      - name: Reporte E2E
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-${{ github.sha }}
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

@@ -4,3 +4,6 @@ coverage
 pnpm-lock.yaml
 docs/SOP_Maestro.md
 *.sql
+playwright-report
+test-results
+apps/web/dev-dist

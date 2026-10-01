@@ -84,3 +84,9 @@ pnpm dev                      # API :4000 · Web :5173  →  http://localhost:51
 - Montos como string decimal en JSON; `DECIMAL(18,6)` en BD.
 - Mensajes de error en español.
 - Nunca hacer commit de `.env` ni secretos.
+
+## Tipografía
+
+Inter 4 variable autoalojada (`apps/web/src/core/fonts`), subconjunto latino + ₡ que conserva
+las features OpenType. `cv08` (I mayúscula con remates) evita que "AImargen" se lea "Almargen".
+Para regenerarla: `pyftsubset InterVariable.woff2 --unicodes=… --layout-features='*' --flavor=woff2`.

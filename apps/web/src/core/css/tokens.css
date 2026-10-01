@@ -1,51 +1,68 @@
 /*
  * Design tokens de AImargen (ADR-0005).
  * ÚNICO archivo donde se permiten colores literales. Los módulos consumen solo variables.
- * Tema claro, azul eléctrico, gris frío. Verde = positivo, rojo = alerta, ámbar = advertencia.
+ *
+ * Dirección visual (SOP §32): claro, premium, azul eléctrico, gris frío, vidrio sutil.
+ * La personalidad la dan las cifras: números grandes, tabulares y bien espaciados.
+ * Elemento distintivo: la barra de margen (costo | margen) que acompaña a todo precio.
  */
 :root {
+  color-scheme: light;
+
   /* Marca */
-  --color-primary: #1f5eff;
-  --color-primary-hover: #1a4fd9;
-  --color-primary-deep: #0b1f4d;
-  --color-primary-soft: #eaf0ff;
+  --color-primary: #1f5eff; /* azul eléctrico */
+  --color-primary-hover: #194fe0;
+  --color-primary-pressed: #1543c2;
+  --color-primary-deep: #0a1a3f; /* azul profundo: títulos, navegación activa */
+  --color-primary-soft: #e8efff;
+  --color-primary-softer: #f3f6ff;
   --color-on-primary: #fff;
+  --color-on-dark-subtle: rgb(255 255 255 / 14%);
 
-  /* Neutros (gris frío) */
-  --color-bg: #f6f8fb;
+  /* Neutros fríos */
+  --color-canvas: #f3f6fb; /* fondo de la app */
   --color-surface: #fff;
-  --color-surface-glass: rgb(255 255 255 / 72%);
-  --color-border: #e3e8ef;
+  --color-surface-raised: #fff;
+  --color-surface-sunken: #eef2f8;
+  --color-surface-glass: rgb(255 255 255 / 78%);
+  --color-border: #e2e8f1;
+  --color-border-strong: #c9d3e1;
   --color-text: #0f172a;
-  --color-text-muted: #5b6577;
-  --color-text-subtle: #8a94a6;
+  --color-text-muted: #5a667a;
+  --color-text-subtle: #7d889b; /* contraste ≥ 3:1 solo para texto grande o iconos */
+  --color-overlay: rgb(10 26 63 / 40%);
 
-  /* Señales — siempre acompañadas de ícono o texto (no solo color) */
-  --color-positive: #0f9d58;
-  --color-positive-soft: #e7f6ee;
-  --color-warning: #b26a00;
-  --color-warning-soft: #fff4e0;
-  --color-danger: #d93025;
-  --color-danger-soft: #fdecea;
+  /* Señales: siempre con ícono o texto, nunca solo color (SOP §32-33) */
+  --color-positive: #0b7a54; /* AA sobre blanco */
+  --color-positive-bar: #12a874;
+  --color-positive-soft: #e3f6ee;
+  --color-warning: #8a5200;
+  --color-warning-soft: #fff3dc;
+  --color-danger: #c4261d;
+  --color-danger-soft: #fdebe9;
+  --color-cost-bar: #b8c4d6; /* porción de costo en la barra de margen */
 
   /* Foco accesible */
-  --focus-ring: 0 0 0 3px rgb(31 94 255 / 35%);
+  --focus-ring: 0 0 0 3px rgb(31 94 255 / 40%);
 
   /* Tipografía */
-  --font-sans:
-    'Inter', system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.375rem;
   --font-size-2xl: 1.75rem;
+  --font-size-title-mobile: 1.5rem;
   --font-size-3xl: 2.25rem;
+  --font-size-4xl: 3rem;
   --line-height: 1.5;
+  --line-height-tight: 1.15;
+  --tracking-tight: -0.02em;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
+  --font-weight-bold: 680;
 
   /* Espaciado (escala de 4 px) */
   --space-1: 0.25rem;
@@ -57,22 +74,33 @@
   --space-8: 2rem;
   --space-10: 2.5rem;
   --space-12: 3rem;
+  --space-16: 4rem;
 
-  /* Radios y sombras */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Radios: jerarquía, no un solo radio para todo */
+  --radius-xs: 6px; /* chips, barras */
+  --radius-sm: 10px; /* inputs, botones */
+  --radius-md: 14px; /* tarjetas */
+  --radius-lg: 22px; /* sheets */
   --radius-full: 999px;
-  --shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
-  --shadow-md: 0 4px 16px rgb(15 23 42 / 8%);
-  --shadow-lg: 0 12px 32px rgb(15 23 42 / 12%);
+
+  /* Sombras frías y suaves */
+  --shadow-sm: 0 1px 2px rgb(10 26 63 / 6%);
+  --shadow-md: 0 2px 4px rgb(10 26 63 / 4%), 0 8px 24px rgb(10 26 63 / 6%);
+  --shadow-lg: 0 12px 40px rgb(10 26 63 / 16%);
+  --blur-glass: saturate(180%) blur(16px);
 
   /* Interacción */
   --touch-target: 44px;
   --duration-fast: 120ms;
-  --duration-base: 200ms;
+  --duration-base: 220ms;
   --easing: cubic-bezier(0.2, 0, 0, 1);
+  --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --sidebar-width: 248px;
+  --content-max: 1120px;
+  --topbar-height: 56px;
+  --bottomnav-height: 64px;
 
   /* Safe areas (notch) */
   --safe-top: env(safe-area-inset-top, 0px);

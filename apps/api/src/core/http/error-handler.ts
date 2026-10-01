@@ -3,6 +3,7 @@ import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod';
 import { CalculationError } from '@aimargen/calculation-engine';
 import { DbError } from '../db/db-error.js';
 import { AppError } from './app-error.js';
+import type { Metrics } from '../observability/metrics.js';
 
 /** Mensajes en español para errores de base de datos (SOP regla 15). */
 const DB_MESSAGES: Record<DbError['code'], { status: number; message: string }> = {
@@ -19,9 +20,10 @@ const DB_MESSAGES: Record<DbError['code'], { status: number; message: string }> 
 };
 
 /** Manejador central: respuestas uniformes `{ error: { code, message, requestId } }`. */
-export function registerErrorHandler(app: FastifyInstance): void {
+export function registerErrorHandler(app: FastifyInstance, metrics?: Metrics): void {
   app.setErrorHandler((err: FastifyError | Error, req, reply) => {
     const requestId = req.id;
+    metrics?.errors.inc({ kind: errorKind(err) });
 
     if (hasZodFastifySchemaValidationErrors(err)) {
       const fields: Record<string, string> = {};
@@ -95,4 +97,13 @@ export function registerErrorHandler(app: FastifyInstance): void {
       error: { code: 'NOT_FOUND', message: 'Recurso no encontrado.', requestId: req.id },
     }),
   );
+}
+
+function errorKind(err: Error): string {
+  if (hasZodFastifySchemaValidationErrors(err)) return 'validation';
+  if (err instanceof AppError) return `app_${err.status}`;
+  if (err instanceof CalculationError) return 'calculation';
+  if (err instanceof DbError) return `db_${err.code.toLowerCase()}`;
+  const status = (err as FastifyError).statusCode;
+  return status && status < 500 ? `http_${status}` : 'unhandled';
 }
