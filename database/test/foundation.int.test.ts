@@ -21,8 +21,9 @@ afterAll(async () => {
 describe('esquema base: integridad estructural (introspección real)', () => {
   it('toda tabla con tenant_id tiene FK a tenants e índice que inicia con tenant_id', async () => {
     const [tables] = await conn.query<RowDataPacket[]>(
-      `SELECT TABLE_NAME AS t FROM information_schema.COLUMNS
-       WHERE TABLE_SCHEMA = ? AND COLUMN_NAME = 'tenant_id' AND TABLE_NAME <> 'tenants'`,
+      `SELECT c.TABLE_NAME AS t FROM information_schema.COLUMNS c
+       JOIN information_schema.TABLES tb ON tb.TABLE_SCHEMA = c.TABLE_SCHEMA AND tb.TABLE_NAME = c.TABLE_NAME
+       WHERE c.TABLE_SCHEMA = ? AND c.COLUMN_NAME = 'tenant_id' AND c.TABLE_NAME <> 'tenants' AND tb.TABLE_TYPE = 'BASE TABLE'`,
       [schema],
     );
     expect(tables.length).toBeGreaterThan(0);
@@ -71,13 +72,14 @@ describe('esquema base: integridad estructural (introspección real)', () => {
     }
   });
 
-  it('las rutinas cumplen prefijos sp_ / fn_', async () => {
+  it('las rutinas y vistas cumplen prefijos sp_ / fn_ / vw_', async () => {
     const [rows] = await conn.query<RowDataPacket[]>(
-      `SELECT ROUTINE_NAME AS n, ROUTINE_TYPE AS k FROM information_schema.ROUTINES WHERE ROUTINE_SCHEMA = ?`,
-      [schema],
+      `SELECT ROUTINE_NAME AS n, ROUTINE_TYPE AS k FROM information_schema.ROUTINES WHERE ROUTINE_SCHEMA = ?
+       UNION ALL SELECT TABLE_NAME, 'VIEW' FROM information_schema.VIEWS WHERE TABLE_SCHEMA = ?`,
+      [schema, schema],
     );
     for (const r of rows) {
-      expect(r.n).toMatch(r.k === 'PROCEDURE' ? /^sp_/ : /^fn_/);
+      expect(r.n).toMatch(r.k === 'PROCEDURE' ? /^sp_/ : r.k === 'VIEW' ? /^vw_/ : /^fn_/);
     }
   });
 });

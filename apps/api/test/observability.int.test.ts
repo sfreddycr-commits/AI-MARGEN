@@ -46,7 +46,14 @@ describe('observabilidad: protección de /metrics', () => {
   });
 
   it('en producción sin token no se expone', async () => {
-    const t = await buildTestApp({ NODE_ENV: 'production' });
+    const t = await buildTestApp({
+      NODE_ENV: 'production',
+      JWT_ACCESS_SECRET: 'x'.repeat(40),
+      MAIL_DRIVER: 'smtp',
+      SMTP_HOST: 'smtp.example.com',
+      RATE_LIMIT_ENABLED: 'true',
+      DEV_OUTBOX: 'false',
+    });
     const res = await t.app.inject({ method: 'GET', url: '/api/v1/metrics' });
     expect(res.statusCode).toBe(404);
     await t.close();
@@ -66,7 +73,14 @@ describe('OpenAPI', () => {
   });
 
   it('no se publica en producción', async () => {
-    const t = await buildTestApp({ NODE_ENV: 'production' });
+    const t = await buildTestApp({
+      NODE_ENV: 'production',
+      JWT_ACCESS_SECRET: 'x'.repeat(40),
+      MAIL_DRIVER: 'smtp',
+      SMTP_HOST: 'smtp.example.com',
+      RATE_LIMIT_ENABLED: 'true',
+      DEV_OUTBOX: 'false',
+    });
     const res = await t.app.inject({ method: 'GET', url: '/api/docs/json' });
     expect(res.statusCode).toBe(404);
     await t.close();
@@ -75,7 +89,7 @@ describe('OpenAPI', () => {
 
 describe('rate limit', () => {
   it('responde 429 en español al superar el límite', async () => {
-    const t = await buildTestApp({ RATE_LIMIT_MAX: '2' });
+    const t = await buildTestApp({ RATE_LIMIT_MAX: '2', RATE_LIMIT_ENABLED: 'true' });
     const hit = () => t.app.inject({ method: 'GET', url: '/api/docs/json' });
     expect((await hit()).statusCode).toBe(200);
     expect((await hit()).statusCode).toBe(200);

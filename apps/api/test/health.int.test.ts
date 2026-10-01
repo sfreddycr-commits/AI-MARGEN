@@ -2,30 +2,18 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { buildApp } from '../src/app.js';
 import { loadConfig } from '../src/core/config/config.js';
-import { createDb, type Db } from '../src/core/db/db.js';
+import { createDb } from '../src/core/db/db.js';
+import { buildTestApp, type TestApp } from './helpers.js';
 
+let t: TestApp;
 let app: FastifyInstance;
-let db: Db;
 
 beforeAll(async () => {
-  const config = loadConfig({
-    DB_NAME: process.env.DB_NAME_TEST ?? 'aimargen_test',
-    LOG_LEVEL: 'silent',
-  });
-  db = createDb({
-    host: config.DB_HOST,
-    port: config.DB_PORT,
-    user: config.DB_USER,
-    password: config.DB_PASSWORD,
-    database: config.DB_NAME,
-  });
-  app = await buildApp({ config, db });
+  t = await buildTestApp();
+  app = t.app;
 });
 
-afterAll(async () => {
-  await app.close();
-  await db.close();
-});
+afterAll(() => t.close());
 
 describe('API: health', () => {
   it('GET /api/v1/health/live → 200 sin tocar la BD', async () => {
@@ -67,7 +55,7 @@ describe('API: health', () => {
 
 describe('API: readiness degradada', () => {
   it('responde 503 si la BD no está disponible', async () => {
-    const config = loadConfig({ DB_PORT: '1', LOG_LEVEL: 'silent' });
+    const config = loadConfig({ DB_PORT: '1', LOG_LEVEL: 'silent', NODE_ENV: 'test' });
     const badDb = createDb({
       host: '127.0.0.1',
       port: 1,

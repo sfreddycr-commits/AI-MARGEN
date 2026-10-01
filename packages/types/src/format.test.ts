@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDecimal, formatMoney, formatPercent, parseLocaleDecimal } from './format';
+import { formatDecimal, formatMoney, formatPercent, parseLocaleDecimal } from './format.js';
 
 describe('formatMoney (presentación CR)', () => {
   it.each([
