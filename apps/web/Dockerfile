@@ -4,15 +4,14 @@ RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 FROM base AS deps
 WORKDIR /app
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
-COPY apps/web/package.json ./apps/web/
+COPY apps/web/ ./apps/web/
 COPY packages/ ./packages/
-RUN pnpm install --frozen-lockfile --filter @aimargen/web...
+RUN pnpm install --frozen-lockfile
 
 FROM deps AS builder
 ARG VITE_API_BASE_URL=/api/v1
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV NODE_ENV=production
-COPY apps/web/ ./apps/web/
 WORKDIR /app/apps/web
 RUN pnpm exec vite build
 
