@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Calidad (lint, tipos, unit, build)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: 1. Install
+        run: pnpm install --frozen-lockfile
+      - name: 2. Formato
+        run: pnpm format:check
+      - name: 3. Lint
+        run: pnpm lint
+      - name: 4. Typecheck
+        run: pnpm typecheck
+      - name: 5. Unit tests
+        run: pnpm test:unit
+      - name: 6. Convenciones de BD (sp_/fn_/vw_, PK, FK, índices, tenant)
+        run: pnpm db:check
+      - name: 8. Build
+        run: pnpm build
+      - name: 9. Dependency audit
+        run: pnpm audit --audit-level high --prod
+
+      - name: Artefactos de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: |
+            apps/api/dist
+            apps/web/dist
+          retention-days: 14
+
+  integration:
+    name: Integración (MySQL 8 real)
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root_ci
+          MYSQL_DATABASE: aimargen_test
+          MYSQL_USER: aimargen
+          MYSQL_PASSWORD: aimargen_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot_ci"
+          --health-interval=5s --health-timeout=3s --health-retries=30
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: aimargen
+      DB_PASSWORD: aimargen_ci
+      DB_NAME: aimargen_ci_dev
+      DB_NAME_TEST: aimargen_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Preparar permisos MySQL
+        run: |
+          mysql -h 127.0.0.1 -uroot -proot_ci -e "
+            SET GLOBAL log_bin_trust_function_creators = 1;
+            CREATE DATABASE IF NOT EXISTS aimargen_ci_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+            GRANT ALL PRIVILEGES ON aimargen_ci_dev.* TO 'aimargen'@'%';
+            GRANT ALL PRIVILEGES ON aimargen_test.* TO 'aimargen'@'%';
+            FLUSH PRIVILEGES;"
+
+      - name: 6. Migraciones aplican en limpio y son idempotentes
+        run: |
+          pnpm db:migrate
+          pnpm db:migrate | tee second-run.log
+          grep -q "0 aplicadas" second-run.log
+
+      - name: 7. Integration tests
+        run: pnpm test:integration

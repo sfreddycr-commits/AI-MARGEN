@@ -1,0 +1,19 @@
+{
+  "name": "@aimargen/schemas",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Esquemas Zod compartidos entre web y api (validación de entrada).",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  }
+}

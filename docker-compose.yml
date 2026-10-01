@@ -1,0 +1,39 @@
+# Entorno local de AImargen: MySQL 8 + Redis (opcional).
+# Uso:  docker compose up -d   →   pnpm db:migrate   →   pnpm dev
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: aimargen-mysql
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root_local_only
+      MYSQL_DATABASE: aimargen_dev
+      MYSQL_USER: aimargen
+      MYSQL_PASSWORD: aimargen_local
+      TZ: UTC
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --log-bin-trust-function-creators=1
+      - --default-time-zone=+00:00
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./infra/docker/mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-uroot', '-proot_local_only']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: aimargen-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    profiles: ['redis']
+
+volumes:
+  mysql-data:

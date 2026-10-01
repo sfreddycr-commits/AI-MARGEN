@@ -1,0 +1,40 @@
+{
+  "name": "aimargen",
+  "private": true,
+  "version": "0.0.0",
+  "description": "AImargen.com — costos, precios, márgenes y rentabilidad para negocios de alimentos",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @aimargen/api --filter @aimargen/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint . && stylelint \"apps/web/src/**/*.css\"",
+    "lint:fix": "eslint . --fix && stylelint \"apps/web/src/**/*.css\" --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "pnpm test:unit && pnpm test:integration",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "db:migrate": "tsx database/scripts/migrate.ts",
+    "db:check": "tsx database/scripts/check-conventions.ts",
+    "db:reset": "tsx database/scripts/migrate.ts --reset"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard": "^40.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^3.2.7"
+  }
+}

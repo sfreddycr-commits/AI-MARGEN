@@ -1,0 +1,21 @@
+{
+  "name": "@aimargen/database",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Migraciones MySQL, stored procedures (sp_), funciones (fn_), vistas (vw_) y seeds.",
+  "type": "module",
+  "main": "./scripts/lib/index.ts",
+  "exports": {
+    ".": "./scripts/lib/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "mysql2": "^3.24.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4"
+  }
+}

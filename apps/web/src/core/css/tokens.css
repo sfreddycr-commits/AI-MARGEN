@@ -1,0 +1,87 @@
+/*
+ * Design tokens de AImargen (ADR-0005).
+ * ÚNICO archivo donde se permiten colores literales. Los módulos consumen solo variables.
+ * Tema claro, azul eléctrico, gris frío. Verde = positivo, rojo = alerta, ámbar = advertencia.
+ */
+:root {
+  /* Marca */
+  --color-primary: #1f5eff;
+  --color-primary-hover: #1a4fd9;
+  --color-primary-deep: #0b1f4d;
+  --color-primary-soft: #eaf0ff;
+  --color-on-primary: #fff;
+
+  /* Neutros (gris frío) */
+  --color-bg: #f6f8fb;
+  --color-surface: #fff;
+  --color-surface-glass: rgb(255 255 255 / 72%);
+  --color-border: #e3e8ef;
+  --color-text: #0f172a;
+  --color-text-muted: #5b6577;
+  --color-text-subtle: #8a94a6;
+
+  /* Señales — siempre acompañadas de ícono o texto (no solo color) */
+  --color-positive: #0f9d58;
+  --color-positive-soft: #e7f6ee;
+  --color-warning: #b26a00;
+  --color-warning-soft: #fff4e0;
+  --color-danger: #d93025;
+  --color-danger-soft: #fdecea;
+
+  /* Foco accesible */
+  --focus-ring: 0 0 0 3px rgb(31 94 255 / 35%);
+
+  /* Tipografía */
+  --font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: 1.75rem;
+  --font-size-3xl: 2.25rem;
+  --line-height: 1.5;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Espaciado (escala de 4 px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radios y sombras */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
+  --shadow-md: 0 4px 16px rgb(15 23 42 / 8%);
+  --shadow-lg: 0 12px 32px rgb(15 23 42 / 12%);
+
+  /* Interacción */
+  --touch-target: 44px;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --easing: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Safe areas (notch) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Capas */
+  --z-nav: 100;
+  --z-sheet: 200;
+  --z-toast: 300;
+}
