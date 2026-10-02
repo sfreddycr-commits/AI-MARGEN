@@ -63,7 +63,9 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(funct
   return (
     <FieldShell id={sid} label={label} hint={hint} error={error} className={className}>
       {(describedBy) => (
-        <div className={`${fieldStyles.control} ${styles.selectControl} ${error ? fieldStyles.invalid : ''}`}>
+        <div
+          className={`${fieldStyles.control} ${styles.selectControl} ${error ? fieldStyles.invalid : ''}`}
+        >
           <select
             ref={ref}
             id={sid}

@@ -477,7 +477,7 @@ describe('reportes y exportaciones', () => {
 });
 
 describe('sincronización (cache local)', () => {
-  it('versiones por entidad y cambios con cursor; tombstones al archivar', async () => {
+  it('versiones por entidad y cambios con cursor; archivados viajan marcados', async () => {
     const v1 = ok<{ versions: Record<string, number> }>(await c.get('/sync/versions'));
     expect(v1.versions.ingredients).toBeGreaterThan(0);
     const all = ok<{ items: Array<{ uuid: string; deleted: boolean }>; cursor: string }>(
@@ -487,10 +487,12 @@ describe('sincronización (cache local)', () => {
     ok(await c.post(`/ingredients/${ids.queso}/archive`));
     const v2 = ok<{ versions: Record<string, number> }>(await c.get('/sync/versions'));
     expect(v2.versions.ingredients).toBeGreaterThan(v1.versions.ingredients!);
-    const delta = ok<{ items: Array<{ uuid: string; deleted: boolean }> }>(
-      await c.get(`/sync/changes?entity=ingredients&cursor=${all.cursor}`),
-    );
-    expect(delta.items.some((i) => i.uuid === ids.queso && i.deleted)).toBe(true);
+    const delta = ok<{
+      items: Array<{ uuid: string; deleted: boolean; data?: { archived: boolean } }>;
+    }>(await c.get(`/sync/changes?entity=ingredients&cursor=${all.cursor}`));
+    expect(
+      delta.items.some((i) => i.uuid === ids.queso && !i.deleted && i.data?.archived === true),
+    ).toBe(true);
     ok(await c.post(`/ingredients/${ids.queso}/restore`));
   });
 });

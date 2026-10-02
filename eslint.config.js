@@ -14,6 +14,7 @@ export default tseslint.config(
       '**/dev-dist/**',
       'playwright-report/**',
       'test-results/**',
+      '.devtools/**',
     ],
   },
   js.configs.recommended,
@@ -49,6 +50,11 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
+  },
+  // Los archivos de rutas solo declaran rutas con vistas diferidas (React.lazy).
+  {
+    files: ['apps/web/src/**/routes.tsx', 'apps/web/src/core/router/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
   // Regla de arquitectura: las fórmulas financieras solo viven en el motor de cálculo.
   // La web no puede importar mysql ni la API importar React.

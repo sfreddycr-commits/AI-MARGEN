@@ -1,0 +1,346 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.filterTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: 100%;
+  padding-left: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-primary-softer);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-deep);
+}
+
+.filterTagText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filterTagRemove {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.filterTagRemove:focus-visible {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+.skeletonRow {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.noResults {
+  padding: var(--space-6) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.count {
+  margin-bottom: calc(var(--space-3) * -1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+}
+
+.help {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.notes {
+  white-space: pre-line;
+  color: var(--color-text-muted);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.detailGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (width >= 1024px) {
+  .detailGrid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+}
+
+/* ---------- Formulario ---------- */
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sheetForm {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+}
+
+.lines {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.line {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.lineHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.lineNumber {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-softer);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.pickerButton {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pickerButton:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+.pickerInvalid {
+  border-color: var(--color-danger);
+}
+
+.pickerValue {
+  flex: 1;
+  overflow: hidden;
+  font-weight: var(--font-weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pickerPlaceholder {
+  flex: 1;
+  color: var(--color-text-subtle);
+}
+
+.pickerUnit {
+  flex: none;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.lineError {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+.lineFields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.lineFields > * {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.lineFields > :last-child {
+  grid-column: 1 / -1;
+}
+
+@media (width >= 720px) {
+  .lineFields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  }
+
+  .lineFields > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* Barra de guardado: fija sobre la navegación inferior en móvil. */
+.footerBar {
+  position: sticky;
+  bottom: calc(var(--bottomnav-height) + var(--safe-bottom));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0 calc(var(--space-4) * -1);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(var(--blur-glass));
+}
+
+.totalBox {
+  display: grid;
+}
+
+.totalLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.totalValue {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.footerBar .cancel {
+  display: none;
+}
+
+@media (width >= 1024px) {
+  .footerBar {
+    position: static;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .footerBar .cancel {
+    display: inline-flex;
+  }
+}
+
+/* ---------- Selector de ingrediente ---------- */
+.picker {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.pickerList {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pickerItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pickerItem:hover,
+.pickerItem:focus-visible {
+  background: var(--color-surface-sunken);
+}
+
+.pickerItem:focus-visible {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+.pickerName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (width >= 720px) {
+  .stats {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+.summary {
+  display: grid;
+  gap: var(--space-3);
+}

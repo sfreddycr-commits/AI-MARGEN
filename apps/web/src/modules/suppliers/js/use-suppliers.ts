@@ -47,7 +47,10 @@ export function toFormValues(s?: Supplier | null): SupplierFormValues {
   };
 }
 
-export function useSaveSupplier(existing: Supplier | null | undefined, onSaved: (s: Supplier) => void) {
+export function useSaveSupplier(
+  existing: Supplier | null | undefined,
+  onSaved: (s: Supplier) => void,
+) {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const mutation = useEntityMutation<SupplierInput, Supplier>({

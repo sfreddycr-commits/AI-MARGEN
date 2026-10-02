@@ -10,7 +10,7 @@ import { fixedCostDto, scenarioDto } from '../planning/planning.dto.js';
 
 /**
  * Sincronización por diferencias para el cache IndexedDB del cliente (ADR-0007).
- * Cada entidad expone su SP `*_changes` (incluye archivados como tombstones) y el mismo DTO
+ * Cada entidad expone su SP `*_changes` (incluye archivados, con `archived: true`) y el mismo DTO
  * que su listado, para que el cliente guarde exactamente lo que mostraría la API.
  */
 interface EntitySpec {
@@ -112,11 +112,13 @@ export function createSyncController(db: Db) {
       const rows = await spec.fetch(db, ctx.tenantId, since, sinceUuid, PAGE);
       const last = rows.at(-1);
       return {
+        // Los archivados viajan como datos (archived: true) para que el cliente pueda mostrarlos
+        // en los filtros de "Archivados" sin conexión. No hay borrado físico de estas entidades.
         items: rows.map((r) => ({
           uuid: String(r.uuid),
-          deleted: !!r.deleted_at,
+          deleted: false,
           updatedAt: iso(r.updated_at)!,
-          data: r.deleted_at ? undefined : spec.map(r),
+          data: spec.map(r),
         })),
         cursor: last
           ? encodeCursor(new Date(last.updated_at), String(last.uuid))

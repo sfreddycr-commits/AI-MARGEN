@@ -1,6 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
+import { queryBool } from '@aimargen/schemas';
 import { requireTenant, tenantCtx } from '../../core/auth/guards.js';
 import type { SyncController } from './sync.controller.js';
 
@@ -27,7 +28,7 @@ export function syncRoutes(c: SyncController): FastifyPluginAsync {
           querystring: z.object({
             entity: z.string().max(40),
             cursor: z.string().max(200).optional(),
-            rewind: z.coerce.boolean().default(false),
+            rewind: queryBool,
           }),
         },
       },

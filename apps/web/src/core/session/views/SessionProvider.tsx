@@ -6,8 +6,6 @@ import { SyncEngine, type ChangeSet } from '../../js/sync-engine';
 import { SessionContext, type SessionApi, type SessionStatus } from '../js/session-context';
 import type { Me } from '../js/session-types';
 
-const resolved = Promise.resolve();
-
 /**
  * Sesión del usuario y cache local.
  * - Carga /auth/me al iniciar (la renovación del token es automática en api-client).
@@ -20,7 +18,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [me, setMeState] = useState<Me | null>(null);
   const [store, setStore] = useState<LocalStore | null>(null);
   const [engine, setEngine] = useState<SyncEngine | null>(null);
-  const [ready, setReady] = useState<Promise<void>>(resolved);
+  const readyRef = useRef<Promise<void>>(Promise.resolve());
   const meRef = useRef<Me | null>(null);
 
   const setMe = useCallback((next: Me | null) => {
@@ -46,19 +44,24 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [setMe]);
 
   useEffect(() => {
+    // Carga inicial de la sesión: el setState ocurre tras la respuesta (asíncrono).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     reload().catch(() => undefined);
   }, [reload]);
 
   const wipe = useCallback(async () => {
     const current = meRef.current;
     engine?.stop();
+    store?.close();
     setEngine(null);
     setStore(null);
     qc.clear();
     await clearAllLocalData(
-      current?.tenant ? { tenantUuid: current.tenant.uuid, userUuid: current.user.uuid } : undefined,
+      current?.tenant
+        ? { tenantUuid: current.tenant.uuid, userUuid: current.user.uuid }
+        : undefined,
     ).catch(() => undefined);
-  }, [engine, qc]);
+  }, [engine, store, qc]);
 
   const logout = useCallback(async () => {
     try {
@@ -88,8 +91,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     if (!tenantUuid || !userUuid) return;
     let cancelled = false;
     let stop: (() => void) | null = null;
+    let opened: LocalStore | null = null;
     let release!: () => void;
-    setReady(new Promise<void>((r) => (release = r)));
+    readyRef.current = new Promise<void>((r) => (release = r));
 
     (async () => {
       let st: LocalStore | null = null;
@@ -97,6 +101,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       try {
         db = await openLocalDb(tenantUuid, userUuid);
         st = localStore(db);
+        opened = st;
       } catch {
         // IndexedDB no disponible (modo privado estricto): las vistas consultan la API directamente.
         release();
@@ -126,7 +131,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         onEntityChanged: (entity) => {
           void qc.invalidateQueries({ queryKey: ['local', entity] });
           void qc.invalidateQueries({ queryKey: ['api', entity] });
-          if (entity === 'ingredients') void qc.invalidateQueries({ queryKey: ['api', 'products'] });
+          if (entity === 'ingredients')
+            void qc.invalidateQueries({ queryKey: ['api', 'products'] });
           void qc.invalidateQueries({ queryKey: ['api', 'dashboard'] });
         },
       });
@@ -140,6 +146,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
       stop?.();
+      opened?.close();
     };
   }, [tenantUuid, userUuid, permissionsKey, qc]);
 
@@ -155,10 +162,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       feature: (code) => me?.flags[code] !== false,
       store,
       engine,
-      ready,
+      whenReady: () => readyRef.current,
       isSuperAdmin: me?.user.role === 'super_admin',
     };
-  }, [status, me, reload, setMe, logout, store, engine, ready]);
+  }, [status, me, reload, setMe, logout, store, engine]);
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }

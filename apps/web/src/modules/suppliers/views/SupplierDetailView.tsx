@@ -58,7 +58,11 @@ export default function SupplierDetailView() {
       action={
         canWrite &&
         !s.archived && (
-          <Button variant="secondary" icon="edit" onClick={() => navigate(`/app/suppliers/${s.uuid}/edit`)}>
+          <Button
+            variant="secondary"
+            icon="edit"
+            onClick={() => navigate(`/app/suppliers/${s.uuid}/edit`)}
+          >
             Editar
           </Button>
         )

@@ -71,14 +71,12 @@ export function aiRoutes(c: AiController): FastifyPluginAsync {
         }
         if (part.file.truncated)
           throw new AppError(413, 'FILE_TOO_LARGE', 'El archivo es demasiado grande.');
-        return reply
-          .status(201)
-          .send(
-            await c.analyzeInvoice(tenantCtx(req), {
-              buffer,
-              filename: part.filename.slice(0, 200),
-            }),
-          );
+        return reply.status(201).send(
+          await c.analyzeInvoice(tenantCtx(req), {
+            buffer,
+            filename: part.filename.slice(0, 200),
+          }),
+        );
       },
     );
 

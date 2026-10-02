@@ -1,7 +1,7 @@
 import { Decimal, weightedAverageUnitCost } from '@aimargen/calculation-engine';
 import { formatMoney, formatPercent } from '@aimargen/types';
 import { AppError } from '../../core/http/app-error.js';
-import { dec, day, iso } from '../../core/http/dto.js';
+import { bool, dec, day, iso } from '../../core/http/dto.js';
 import type { Row } from '../../core/db/db.js';
 import type { TenantContext } from '../../core/http/request-context.js';
 import type { Services } from '../../core/services.js';
@@ -372,6 +372,18 @@ export function createReportController(
       format: ReportFormat,
       params: { from?: string; to?: string; product?: string },
     ): Promise<ReportFile> {
+      if (format === 'xlsx') {
+        const flag = (await deps.tenants.flags(ctx.tenantId)).find(
+          (f) => String(f.code) === 'reports.xlsx',
+        );
+        if (flag && !bool(flag.enabled)) {
+          throw new AppError(
+            403,
+            'FEATURE_DISABLED',
+            'La exportación a Excel no está habilitada para su negocio.',
+          );
+        }
+      }
       const m = await meta(ctx);
       const stamp = m.generatedAt.toISOString().slice(0, 10);
       let file: ReportFile;

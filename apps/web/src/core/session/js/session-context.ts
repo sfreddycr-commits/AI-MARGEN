@@ -20,7 +20,7 @@ export interface SessionApi {
   store: LocalStore | null;
   engine: SyncEngine | null;
   /** Se resuelve cuando la primera sincronización terminó (o falló). */
-  ready: Promise<void>;
+  whenReady: () => Promise<void>;
   isSuperAdmin: boolean;
 }
 

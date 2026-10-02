@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
-import { pagination, purchaseInput, uuid } from '@aimargen/schemas';
+import { pagination, purchaseInput, uuid, queryBool } from '@aimargen/schemas';
 import { requirePermission, tenantCtx } from '../../core/auth/guards.js';
 import type { PurchaseController } from './purchases.controller.js';
 
@@ -11,7 +11,7 @@ const listQuery = pagination.extend({
   ingredient: uuid.optional(),
   from: z.iso.date().optional(),
   to: z.iso.date().optional(),
-  includeVoid: z.coerce.boolean().default(false),
+  includeVoid: queryBool,
 });
 
 export function purchaseRoutes(c: PurchaseController): FastifyPluginAsync {

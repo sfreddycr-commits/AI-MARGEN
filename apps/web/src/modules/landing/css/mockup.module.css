@@ -1,0 +1,276 @@
+/* Maqueta del producto (HTML/CSS). Solo tokens. */
+.stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+}
+
+.stagePanel {
+  display: none;
+}
+
+.stagePhone {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+}
+
+.caption {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}
+
+/* ---------- Teléfono ---------- */
+.phone {
+  position: relative;
+  padding: 10px;
+  border-radius: 40px;
+  background: var(--color-primary-deep);
+  box-shadow: var(--shadow-lg);
+}
+
+.phoneNotch {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 1;
+  width: 84px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-deep);
+  transform: translateX(-50%);
+}
+
+.phoneScreen {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-4) var(--space-5);
+  border-radius: 31px;
+  background: var(--color-canvas);
+}
+
+.phoneTop {
+  display: grid;
+  gap: 2px;
+}
+
+.phoneEyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.phoneTitle {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.kpi {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.kpiStrong {
+  border-color: var(--color-primary-soft);
+  background: var(--color-primary-softer);
+}
+
+.kpiLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.kpiValue {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.kpiStrong .kpiValue {
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: calc(var(--space-2) * -1);
+  color: var(--color-positive);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.lines {
+  display: grid;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  list-style: none;
+  font-size: var(--font-size-xs);
+}
+
+.lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.lines li:last-child {
+  border-bottom: 0;
+}
+
+.qty {
+  color: var(--color-text-muted);
+}
+
+.lineMuted {
+  color: var(--color-text-muted);
+}
+
+/* ---------- Panel de escritorio ---------- */
+.panel {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-glass);
+  backdrop-filter: var(--blur-glass);
+  box-shadow: var(--shadow-md);
+}
+
+.panelBar {
+  display: flex;
+  gap: 6px;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panelBar span {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong);
+}
+
+.panelBody {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.panelHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.panelTitle {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.panelMeta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.rows {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.rowTop {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.rowName {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.rowMargin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-positive);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.rowLow {
+  color: var(--color-warning);
+}
+
+.rowMeta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+@media (width >= 1024px) {
+  .stage {
+    justify-items: stretch;
+    padding: var(--space-6) 0 0;
+  }
+
+  .stagePanel {
+    display: block;
+    width: 82%;
+  }
+
+  .stagePhone {
+    position: absolute;
+    top: var(--space-12);
+    right: 0;
+    width: 300px;
+  }
+
+  .phoneScreen {
+    gap: var(--space-3);
+  }
+
+  /* El pie queda a la izquierda del teléfono, que se superpone al panel */
+  .caption {
+    max-width: calc(100% - 300px - var(--space-4));
+    margin-top: var(--space-6);
+    text-align: left;
+  }
+}

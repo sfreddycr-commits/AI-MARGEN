@@ -1,0 +1,191 @@
+.statSkeleton {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.attention {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+}
+
+.list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.skeletonRow {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.row {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.row + .row {
+  border-top: 1px solid var(--color-border);
+}
+
+.rowHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.rowName {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  min-width: 0;
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.rowName:hover {
+  color: var(--color-primary);
+}
+
+.compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.compareCell {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.compareArrow {
+  color: var(--color-text-subtle);
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.recommended {
+  color: var(--color-primary);
+}
+
+.caption {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.rowFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.calculator {
+  align-content: start;
+}
+
+.hintBox {
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.result {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-softer);
+  transition: opacity var(--duration-base) var(--easing);
+}
+
+.pending {
+  opacity: 0.6;
+}
+
+.resultMain {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.big {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-deep);
+}
+
+.explain {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-sm);
+}
+
+.explain > svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.explainTitle {
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (width >= 1024px) {
+  .statSkeleton {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 400px;
+    align-items: start;
+  }
+
+  .calculator {
+    position: sticky;
+    top: var(--space-6);
+  }
+}

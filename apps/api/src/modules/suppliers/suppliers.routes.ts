@@ -1,14 +1,14 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
-import { pagination, supplierInput, uuid } from '@aimargen/schemas';
+import { pagination, queryBool, supplierInput, uuid } from '@aimargen/schemas';
 import { requirePermission, tenantCtx } from '../../core/auth/guards.js';
 import type { SupplierController } from './suppliers.controller.js';
 
 const params = z.object({ uuid });
 const listQuery = pagination.extend({
   q: z.string().max(120).optional(),
-  archived: z.coerce.boolean().default(false),
+  archived: queryBool,
 });
 
 export function supplierRoutes(c: SupplierController): FastifyPluginAsync {

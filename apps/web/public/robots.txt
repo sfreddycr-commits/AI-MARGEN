@@ -1,0 +1,8 @@
+# AImargen — https://aimargen.com
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /api
+Disallow: /onboarding
+
+Sitemap: https://aimargen.com/sitemap.xml

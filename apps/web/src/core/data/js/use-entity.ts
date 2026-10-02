@@ -64,14 +64,14 @@ export function useLocalList<T extends WithArchived & { name?: string }>(
   entity: SyncEntity,
   opts: { includeArchived?: boolean; enabled?: boolean } = {},
 ) {
-  const { store, ready } = useSession();
+  const { store, whenReady } = useSession();
   return useQuery({
     queryKey: ['local', entity, store ? 'idb' : 'api', !!opts.includeArchived],
     enabled: opts.enabled ?? true,
     queryFn: async (): Promise<T[]> => {
       let rows: T[];
       if (store) {
-        await ready;
+        await whenReady();
         rows = await store.list<T>(entity);
         const state = await store.getSyncState(entity);
         // Aún sin sincronizar (primer uso sin conexión estable): se consulta la API.
@@ -88,13 +88,13 @@ export function useLocalList<T extends WithArchived & { name?: string }>(
 
 /** Un registro del cache local (o de la API si no está). */
 export function useLocalItem<T>(entity: SyncEntity, uuid: string | undefined, apiPath: string) {
-  const { store, ready } = useSession();
+  const { store, whenReady } = useSession();
   return useQuery({
     queryKey: ['local', entity, 'item', uuid],
     enabled: !!uuid,
     queryFn: async (): Promise<T> => {
       if (store) {
-        await ready;
+        await whenReady();
         const hit = await store.get<T>(entity, uuid!);
         if (hit) return hit;
       }

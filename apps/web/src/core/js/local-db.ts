@@ -93,6 +93,10 @@ export function localStore(db: LocalDb) {
     async getKv<T>(key: string): Promise<T | undefined> {
       return (await db.get('kv', key))?.value as T | undefined;
     },
+    /** Cierra la conexión (necesario antes de borrar la base: deleteDB espera a que no haya conexiones). */
+    close(): void {
+      db.close();
+    },
   };
 }
 

@@ -160,6 +160,10 @@ export function finishPdf(doc: PDFKit.PDFDocument): Promise<Buffer> {
   for (let i = range.start; i < range.start + range.count; i++) {
     doc.switchToPage(i);
     const y = doc.page.height - 36;
+    // El pie se escribe dentro del margen inferior: se anula temporalmente para que pdfkit
+    // no cree una página extra al detectar que el texto "no cabe".
+    const bottom = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
     doc
       .font('regular')
       .fontSize(8)
@@ -169,6 +173,7 @@ export function finishPdf(doc: PDFKit.PDFDocument): Promise<Buffer> {
         align: 'right',
         lineBreak: false,
       });
+    doc.page.margins.bottom = bottom;
   }
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];

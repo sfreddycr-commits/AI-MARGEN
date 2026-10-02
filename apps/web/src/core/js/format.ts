@@ -7,7 +7,11 @@ export {
   currencySymbol,
 } from '@aimargen/types';
 
-const dateFmt = new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'short', year: 'numeric' });
+const dateFmt = new Intl.DateTimeFormat('es-CR', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
 const dateTimeFmt = new Intl.DateTimeFormat('es-CR', {
   day: 'numeric',
   month: 'short',

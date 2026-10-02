@@ -1,0 +1,236 @@
+/* Navegación local entre secciones del panel */
+.nav {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0 calc(var(--space-4) * -1);
+  padding: 0 var(--space-4) var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navLink {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  padding: 0 var(--space-3);
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: var(--color-text);
+}
+
+.navActive {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary-deep);
+  font-weight: var(--font-weight-semibold);
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.toolbar {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.help {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.skeletonRow {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.noResults {
+  padding: var(--space-6) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.pagerText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.detailGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cellMain {
+  display: grid;
+  gap: 2px;
+  min-width: 160px;
+}
+
+.cellSub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Funciones por negocio (feature flags) */
+.flagList {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flag {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+}
+
+.flag + .flag {
+  border-top: 1px solid var(--color-border);
+}
+
+.flagHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.flagTitle {
+  display: grid;
+  gap: 2px;
+}
+
+.flagCode {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: ui-monospace, monospace;
+}
+
+.monthField {
+  max-width: 240px;
+}
+
+/* Auditoría */
+.auditList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.auditItem {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+}
+
+.auditItem + .auditItem {
+  border-top: 1px solid var(--color-border);
+}
+
+.auditTitle {
+  font-weight: var(--font-weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.auditMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.diff {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+}
+
+@media (width >= 720px) {
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+@media (width >= 1024px) {
+  .nav {
+    margin: 0;
+    padding: 0;
+  }
+
+  .detailGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}

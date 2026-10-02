@@ -1,0 +1,406 @@
+/* ---------- Marca ---------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Isotipo: dos barras, costo y margen (igual que en el shell) */
+.brandMark {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 2px;
+  width: 30px;
+  height: 12px;
+}
+
+.brandMark span:first-child {
+  border-radius: 3px 0 0 3px;
+  background: var(--color-primary-deep);
+}
+
+.brandMark span:last-child {
+  border-radius: 0 3px 3px 0;
+  background: var(--color-primary);
+}
+
+.brandWord {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-primary-deep);
+}
+
+.brandWord b {
+  font-weight: var(--font-weight-bold);
+}
+
+.brandLight .brandWord {
+  color: var(--color-on-primary);
+}
+
+.brandLight .brandMark span:first-child {
+  background: var(--color-on-primary);
+}
+
+/* ---------- Estructura ---------- */
+.layout {
+  min-height: 100dvh;
+  background: var(--color-surface);
+}
+
+.panel {
+  display: none;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  padding: calc(var(--space-6) + var(--safe-top)) var(--space-4)
+    calc(var(--space-8) + var(--safe-bottom));
+}
+
+.column {
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 420px;
+}
+
+.mobileBrand {
+  padding-bottom: var(--space-2);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: var(--font-size-title-mobile);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-primary-deep);
+}
+
+.description {
+  color: var(--color-text-muted);
+}
+
+.footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ---------- Formularios ---------- */
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.centered {
+  text-align: center;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-weight: var(--font-weight-medium);
+}
+
+.reveal {
+  display: grid;
+  place-items: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  margin-right: calc(var(--space-3) * -1);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.reveal:hover {
+  color: var(--color-primary);
+}
+
+.reveal[aria-pressed='true'] {
+  color: var(--color-primary);
+}
+
+.rules {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: calc(var(--space-2) * -1);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+}
+
+.rulesTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.rulesList {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rule,
+.ruleMet {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.rule {
+  color: var(--color-text-muted);
+}
+
+.ruleMet {
+  color: var(--color-positive);
+  font-weight: var(--font-weight-medium);
+}
+
+.terms {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.terms a {
+  font-weight: var(--font-weight-medium);
+}
+
+.fieldError {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+.noticeButton {
+  margin-top: var(--space-3);
+}
+
+/* ---------- Estados (correo enviado, éxito) ---------- */
+.mailHero,
+.successHero {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+}
+
+.mailHero {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.successHero {
+  background: var(--color-positive-soft);
+  color: var(--color-positive);
+}
+
+.lead {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+}
+
+.email {
+  overflow-wrap: anywhere;
+  color: var(--color-primary-deep);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.primaryLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.primaryLink:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+/* ---------- Panel de valor (escritorio) ---------- */
+.panelBrand {
+  display: inline-flex;
+  align-self: flex-start;
+  min-height: var(--touch-target);
+  align-items: center;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.panelBody {
+  display: grid;
+  gap: var(--space-8);
+  max-width: 460px;
+}
+
+.claim {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-on-primary);
+}
+
+.sample {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.sampleHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sampleName {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-deep);
+}
+
+.samplePrice {
+  display: grid;
+  justify-items: end;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-deep);
+}
+
+.sampleLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.sampleNote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-positive);
+}
+
+.points {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-on-primary);
+}
+
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.pointIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-on-dark-subtle);
+}
+
+.panelFoot {
+  font-size: var(--font-size-sm);
+  color: var(--color-on-primary);
+  opacity: 0.75;
+}
+
+@media (width >= 720px) {
+  .main {
+    padding-top: calc(var(--space-12) + var(--safe-top));
+  }
+
+  .title {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+@media (width >= 1024px) {
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  }
+
+  .panel {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-8);
+    height: 100dvh;
+    padding: var(--space-10) var(--space-12);
+    background:
+      radial-gradient(
+        circle at 85% 10%,
+        color-mix(in srgb, var(--color-primary) 55%, transparent),
+        transparent 55%
+      ),
+      var(--color-primary-deep);
+    overflow: hidden;
+  }
+
+  .main {
+    align-items: center;
+    padding: var(--space-12) var(--space-8);
+  }
+
+  .mobileBrand {
+    display: none;
+  }
+}

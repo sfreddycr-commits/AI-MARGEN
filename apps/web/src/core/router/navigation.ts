@@ -177,11 +177,7 @@ export interface NavAccess {
  * Ítems visibles según entorno y permisos. En producción solo módulos listos y no-dev.
  * Sin `access` (pruebas) no se filtra por permisos.
  */
-export function visibleNavItems(
-  items: NavItem[],
-  opts: NavOptions,
-  access?: NavAccess,
-): NavItem[] {
+export function visibleNavItems(items: NavItem[], opts: NavOptions, access?: NavAccess): NavItem[] {
   return items.filter((i) => {
     if (i.devOnly && !opts.isDev) return false;
     if (i.status === 'upcoming') return opts.isDev && opts.showUpcoming;

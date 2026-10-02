@@ -12,7 +12,12 @@ import {
 } from '../../../core/ui';
 import { Page } from '../../../core/shell/views/Page';
 import { PageSkeleton } from '../../../core/shell/views/PageSkeleton';
-import { toFormValues, useSaveSupplier, useSupplier, type SupplierFormValues } from '../js/use-suppliers';
+import {
+  toFormValues,
+  useSaveSupplier,
+  useSupplier,
+  type SupplierFormValues,
+} from '../js/use-suppliers';
 import type { Supplier } from '../js/suppliers.service';
 
 export default function SupplierFormView() {

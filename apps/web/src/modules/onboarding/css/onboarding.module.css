@@ -1,0 +1,399 @@
+/* ---------- Estructura ---------- */
+.layout {
+  min-height: 100dvh;
+  padding: calc(var(--space-4) + var(--safe-top)) var(--space-4) 0;
+  background: var(--color-canvas);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: var(--touch-target);
+}
+
+.stepCount {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ---------- Progreso ---------- */
+.progress {
+  max-width: 640px;
+  margin: var(--space-3) auto 0;
+}
+
+.progressList {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progressItem {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.progressBar {
+  display: block;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+}
+
+.done .progressBar {
+  background: var(--color-primary-deep);
+}
+
+.current .progressBar {
+  background: var(--color-primary);
+}
+
+/* En móvil solo se lee la etiqueta del paso actual (el resto queda para lectores). */
+.progressLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-6) 0 calc(var(--space-8) + var(--safe-bottom));
+}
+
+/* ---------- Paso ---------- */
+.step {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.stepHeader {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.stepTitle {
+  font-size: var(--font-size-title-mobile);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-primary-deep);
+}
+
+.stepTitle:focus {
+  outline: none;
+}
+
+.stepDescription {
+  color: var(--color-text-muted);
+}
+
+.stepBody {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Acción principal fija abajo en móvil (pulgar), en línea en pantallas anchas. */
+.stepActions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0 calc(var(--space-4) * -1);
+  padding: var(--space-3) var(--space-4) calc(var(--space-3) + var(--safe-bottom));
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-glass);
+  backdrop-filter: var(--blur-glass);
+}
+
+.primaryButton {
+  flex: 1 1 160px;
+}
+
+.backButton {
+  flex: 0 0 auto;
+}
+
+.aside {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.group {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.legend {
+  margin-bottom: var(--space-3);
+  padding: 0;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-deep);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.pair > * {
+  min-width: 0;
+}
+
+.error {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+/* ---------- Opciones (método de costo) ---------- */
+.choices {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: var(--touch-target);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--easing),
+    background var(--duration-fast) var(--easing);
+}
+
+.choiceActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-softer);
+}
+
+.choice:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.choiceInput {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  accent-color: var(--color-primary);
+}
+
+.choiceText {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.choiceLabel {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-deep);
+}
+
+.choiceDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Elemento ya guardado ---------- */
+.savedCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.savedIcon,
+.doneIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--color-positive-soft);
+  color: var(--color-positive);
+}
+
+.savedIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.doneIcon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-2);
+}
+
+.savedName {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-deep);
+}
+
+.savedMeta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Cálculo en vivo ---------- */
+.preview {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-softer);
+  border: 1px solid var(--color-primary-soft);
+}
+
+.previewTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-deep);
+}
+
+.previewHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.figures {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.figures dt {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.figures dd {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-deep);
+}
+
+/* ---------- Resultado ---------- */
+.resultCard {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.resultHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.resultName {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary-deep);
+}
+
+.resultBar {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.resultProfit {
+  color: var(--color-text);
+}
+
+.resultBarLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+@media (width >= 720px) {
+  .layout {
+    padding-top: calc(var(--space-8) + var(--safe-top));
+  }
+
+  .progressLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-subtle);
+  }
+
+  .current .progressLabel {
+    color: var(--color-primary);
+  }
+
+  .done .progressLabel {
+    color: var(--color-primary-deep);
+  }
+
+  .main {
+    padding-top: var(--space-10);
+  }
+
+  .stepTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .stepBody,
+  .resultCard {
+    padding: var(--space-6);
+  }
+
+  .stepActions {
+    position: static;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    border-top: 0;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .backButton {
+    margin-right: auto;
+  }
+
+  .primaryButton {
+    flex: 0 0 auto;
+    min-width: 200px;
+  }
+}

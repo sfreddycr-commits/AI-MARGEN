@@ -771,6 +771,10 @@ export function createAiController(
 
     /** Insights (SOP §25): deterministas y rastreables; disponibles aunque la IA no esté configurada. */
     async insights(ctx: TenantContext) {
+      const flag = (await model.flags(ctx.tenantId)).find((f) => f.code === 'ai.insights');
+      if (flag && !bool(flag.enabled)) {
+        throw new AppError(403, 'FEATURE_DISABLED', 'Esta función no está habilitada para su negocio.');
+      }
       const summary = await deps.dashboard.summary(ctx);
       return { insights: summary.insights, alerts: summary.alerts, aiEnabled: !!s.ai };
     },

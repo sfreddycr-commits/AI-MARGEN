@@ -161,8 +161,9 @@ export function createTenantController(model: TenantModel, auth: AuthModel, s: S
           'No puede modificar a un usuario con rol igual o superior al suyo.',
         );
       }
-      const status =
-        input.status === 'active' && current?.status === 'invited' ? 'invited' : input.status;
+      // Quien nunca aceptó la invitación (correo sin verificar) vuelve a "invitado", no a "activo".
+      const neverAccepted = current?.status === 'invited' || (current && !current.email_verified_at);
+      const status = input.status === 'active' && neverAccepted ? 'invited' : input.status;
       const result = await model.updateUser(ctx.tenantId, userUuid, input.role, status);
       await s.audit.log(ctx, {
         action: 'user.update',

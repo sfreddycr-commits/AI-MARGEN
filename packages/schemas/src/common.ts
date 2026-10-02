@@ -31,6 +31,12 @@ export const email = z
   .pipe(z.email({ error: 'Ingrese un correo válido.' }))
   .refine((v) => v.length <= 190, { error: 'El correo es demasiado largo.' });
 
+/** Booleano en query string: solo "true"/"1" es verdadero ("false" NO se convierte en true). */
+export const queryBool = z
+  .enum(['true', 'false', '1', '0'], { error: 'Valor inválido.' })
+  .default('false')
+  .transform((v) => v === 'true' || v === '1');
+
 /** Paginación estándar de listados. */
 export const pagination = z.object({
   page: z.coerce.number().int().min(1).default(1),

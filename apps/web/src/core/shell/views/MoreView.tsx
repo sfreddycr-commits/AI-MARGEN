@@ -28,7 +28,8 @@ export function MoreView() {
           <span className={styles.accountText}>
             <strong>{me.user.name}</strong>
             <span>
-              {me.tenant?.name ?? 'Plataforma AImargen'} · {ROLE_LABELS[me.user.role] ?? me.user.role}
+              {me.tenant?.name ?? 'Plataforma AImargen'} ·{' '}
+              {ROLE_LABELS[me.user.role] ?? me.user.role}
             </span>
           </span>
         </section>

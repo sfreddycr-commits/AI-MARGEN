@@ -54,8 +54,7 @@ export function RequirePermission({
 }) {
   const { can, isSuperAdmin } = useSession();
   const list = Array.isArray(permission) ? permission : [permission];
-  const allowed =
-    list.some((p) => can(p)) || (isSuperAdmin && list.includes('platform.admin'));
+  const allowed = list.some((p) => can(p)) || (isSuperAdmin && list.includes('platform.admin'));
   if (!allowed) {
     return (
       <EmptyState

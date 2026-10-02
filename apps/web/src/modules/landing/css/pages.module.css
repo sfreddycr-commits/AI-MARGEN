@@ -1,0 +1,473 @@
+/* Páginas internas del sitio público: funciones, precios, seguridad, legales y contacto. Solo tokens. */
+
+/* ---------- Funciones ---------- */
+.featureList {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.featureHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.featureNum {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.bullets {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.bullets li {
+  display: flex;
+  gap: var(--space-2);
+  line-height: var(--line-height);
+}
+
+.bullets svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-positive);
+}
+
+/* ---------- Precios ---------- */
+.notice {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-softer);
+  color: var(--color-primary-deep);
+}
+
+.notice svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.notice p + p {
+  margin-top: var(--space-1);
+}
+
+.noticeMuted {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.plans {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.planAction {
+  margin-top: auto;
+}
+
+.planName {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+.planFor {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.planPrice {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-sunken);
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.limits {
+  margin-top: var(--space-8);
+  padding: var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.limitsTitle {
+  margin-bottom: var(--space-3);
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* ---------- Preguntas frecuentes ---------- */
+.faq {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 48rem;
+}
+
+.faqItem {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.faqItem summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-primary-deep);
+  font-weight: var(--font-weight-semibold);
+  list-style: none;
+  cursor: pointer;
+}
+
+.faqChevron {
+  flex: none;
+  color: var(--color-text-subtle);
+  transition: transform var(--duration-fast) var(--easing);
+}
+
+.faqItem[open] .faqChevron {
+  transform: rotate(180deg);
+}
+
+.faqAnswer {
+  padding: 0 var(--space-4) var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height);
+}
+
+/* ---------- Seguridad ---------- */
+.measures {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.measure {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.measureIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.measureBody {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.tips {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 48rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Páginas legales ---------- */
+.draft {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.draft svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.draft strong {
+  display: block;
+}
+
+.draftText {
+  margin-top: var(--space-1);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.legal {
+  display: grid;
+}
+
+.toc {
+  display: none;
+}
+
+.prose {
+  display: grid;
+  gap: var(--space-8);
+  min-width: 0;
+  max-width: 46rem;
+  color: var(--color-text);
+  line-height: 1.65;
+}
+
+.prose section {
+  display: grid;
+  gap: var(--space-3);
+  scroll-margin-top: calc(var(--topbar-height) + var(--space-4));
+}
+
+.prose h2 {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.prose ul {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.prose a {
+  color: var(--color-primary);
+  overflow-wrap: anywhere;
+}
+
+.updated {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* ---------- Contacto ---------- */
+.contactGrid {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.formCard {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.formFields {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.formTitle {
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Campo trampa: fuera de la vista y del orden de tabulación, pero presente en el formulario. */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.privacyNote {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height);
+}
+
+.privacyNote a {
+  color: var(--color-primary);
+}
+
+.success {
+  scroll-margin-top: calc(var(--topbar-height) + var(--space-4));
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+
+.successIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--color-positive-soft);
+  color: var(--color-positive);
+}
+
+.contactAside {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+}
+
+.contactItem {
+  display: flex;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height);
+}
+
+.contactItem svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.contactItem strong {
+  display: block;
+  color: var(--color-primary-deep);
+  font-size: var(--font-size-md);
+}
+
+.contactItem a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (width >= 720px) {
+  .featureList,
+  .measures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plans {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .formCard {
+    padding: var(--space-8);
+  }
+}
+
+@media (width >= 1024px) {
+  .legal {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+
+  .toc {
+    position: sticky;
+    top: calc(64px + var(--space-6));
+    display: grid;
+    align-self: start;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-sm);
+  }
+
+  .toc a {
+    display: block;
+    padding: var(--space-1) 0;
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--color-primary-deep);
+    text-decoration: underline;
+  }
+
+  .contactGrid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+}
