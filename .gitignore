@@ -7,7 +7,7 @@ coverage/
 .env.*
 !.env.example
 .DS_Store
-storage/
+/storage/
 playwright-report/
 test-results/
 .devtools/
