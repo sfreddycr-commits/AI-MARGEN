@@ -126,7 +126,7 @@ describe('SyncEngine', () => {
     });
     await engine.sync();
     expect(await store.list('products')).toEqual([{ name: 'Cappuccino grande' }]);
-    expect(s.transport.getChanges).toHaveBeenLastCalledWith('products', 'c1');
+    expect(s.transport.getChanges).toHaveBeenLastCalledWith('products', 'c1', true);
   });
 
   it('write-through: la escritura propia se ve de inmediato sin esperar sincronización', async () => {

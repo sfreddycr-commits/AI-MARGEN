@@ -20,6 +20,10 @@ export interface NavItem {
   group: 'main' | 'system';
   status: 'ready' | 'upcoming';
   devOnly?: boolean;
+  /** Permiso requerido para mostrarse (si el rol no lo tiene, no aparece). */
+  permission?: string;
+  /** Visible para el administrador de la plataforma (sin negocio). */
+  platform?: boolean;
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -30,91 +34,111 @@ export const NAV_ITEMS: NavItem[] = [
     to: '/app',
     mobile: 'primary',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'ingredients',
+    permission: 'ingredients.read',
     label: 'Ingredientes',
     icon: 'ingredients',
     to: '/app/ingredients',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'purchases',
+    permission: 'purchases.read',
     label: 'Compras',
     icon: 'purchases',
     to: '/app/purchases',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'suppliers',
+    permission: 'suppliers.read',
     label: 'Proveedores',
     icon: 'suppliers',
     to: '/app/suppliers',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'products',
+    permission: 'products.read',
     label: 'Productos y recetas',
     shortLabel: 'Productos',
     icon: 'products',
     to: '/app/products',
     mobile: 'primary',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'pricing',
+    permission: 'pricing.read',
     label: 'Precio y margen',
     shortLabel: 'Costos',
     icon: 'costs',
     to: '/app/pricing',
     mobile: 'primary',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'scenarios',
+    permission: 'scenarios.read',
     label: 'Escenarios',
     icon: 'scenarios',
     to: '/app/scenarios',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'reports',
+    permission: 'reports.read',
     label: 'Reportes',
     icon: 'reports',
     to: '/app/reports',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'ai',
+    permission: 'ai.use',
     label: 'AImargen AI',
     shortLabel: 'IA',
     icon: 'ai',
     to: '/app/ai',
     mobile: 'primary',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
   },
   {
     id: 'settings',
+    permission: 'settings.read',
     label: 'Configuración',
     icon: 'settings',
     to: '/app/settings',
     mobile: 'more',
     group: 'main',
-    status: 'upcoming',
+    status: 'ready',
+  },
+  {
+    id: 'admin',
+    label: 'Panel de plataforma',
+    icon: 'shield',
+    to: '/app/admin',
+    mobile: 'more',
+    group: 'system',
+    status: 'ready',
+    permission: 'platform.admin',
+    platform: true,
   },
   {
     id: 'system',
@@ -124,6 +148,7 @@ export const NAV_ITEMS: NavItem[] = [
     mobile: 'more',
     group: 'system',
     status: 'ready',
+    platform: true,
   },
   {
     id: 'components',
@@ -142,11 +167,28 @@ export interface NavOptions {
   showUpcoming: boolean;
 }
 
-/** Ítems visibles según entorno. En producción solo módulos listos y no-dev. */
-export function visibleNavItems(items: NavItem[], opts: NavOptions): NavItem[] {
+export interface NavAccess {
+  can: (permission: string) => boolean;
+  /** Administrador de plataforma sin negocio: solo ve ítems de plataforma. */
+  platformOnly: boolean;
+}
+
+/**
+ * Ítems visibles según entorno y permisos. En producción solo módulos listos y no-dev.
+ * Sin `access` (pruebas) no se filtra por permisos.
+ */
+export function visibleNavItems(
+  items: NavItem[],
+  opts: NavOptions,
+  access?: NavAccess,
+): NavItem[] {
   return items.filter((i) => {
     if (i.devOnly && !opts.isDev) return false;
     if (i.status === 'upcoming') return opts.isDev && opts.showUpcoming;
+    if (access) {
+      if (access.platformOnly) return !!i.platform;
+      if (i.permission && !access.can(i.permission)) return false;
+    }
     return true;
   });
 }

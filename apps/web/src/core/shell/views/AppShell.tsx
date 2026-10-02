@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router';
 import { Icon } from '../../ui';
+import { useSession } from '../../session/js/session-context';
+import { useNavAccess } from '../js/use-nav-access';
 import { NAV_ITEMS, navOptions, visibleNavItems, type NavItem } from '../../router/navigation';
 import { useOnlineStatus } from '../js/use-online-status';
 import { PageSkeleton } from './PageSkeleton';
@@ -71,7 +73,8 @@ function BottomLink({ item }: { item: NavItem }) {
 export function AppShell() {
   const online = useOnlineStatus();
   const location = useLocation();
-  const items = visibleNavItems(NAV_ITEMS, navOptions);
+  const { me, logout } = useSession();
+  const items = visibleNavItems(NAV_ITEMS, navOptions, useNavAccess());
   const main = items.filter((i) => i.group === 'main');
   const system = items.filter((i) => i.group === 'system');
   const primary = items.filter((i) => i.mobile === 'primary');
@@ -102,6 +105,28 @@ export function AppShell() {
             ))}
           </nav>
         )}
+        {me && (
+          <div className={styles.account}>
+            <span className={styles.avatar} aria-hidden="true">
+              {me.user.name.slice(0, 1).toUpperCase()}
+            </span>
+            <span className={styles.accountText}>
+              <span className={styles.accountName}>{me.user.name}</span>
+              <span className={styles.accountTenant}>
+                {me.tenant?.name ?? 'Plataforma AImargen'}
+              </span>
+            </span>
+            <button
+              type="button"
+              className={styles.logout}
+              onClick={() => void logout()}
+              aria-label="Cerrar sesión"
+              title="Cerrar sesión"
+            >
+              <Icon name="logout" size={20} />
+            </button>
+          </div>
+        )}
       </aside>
 
       <div className={styles.main}>
@@ -119,7 +144,7 @@ export function AppShell() {
       </div>
 
       <nav className={styles.bottomNav} aria-label="Navegación principal">
-        {primary.map((i) => (
+        {(primary.length > 0 ? primary : items.slice(0, 1)).map((i) => (
           <BottomLink key={i.id} item={i} />
         ))}
         <NavLink

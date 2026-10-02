@@ -22,7 +22,9 @@ export interface ChangeSet {
 
 export interface SyncTransport {
   getVersions(): Promise<Record<string, number>>;
-  getChanges(entity: string, cursor: string | null): Promise<ChangeSet>;
+  /** `rewind`: la primera página de una sincronización reanudada retrocede unos segundos en el
+   *  servidor para no perder escrituras concurrentes (las repetidas se sobrescriben igual). */
+  getChanges(entity: string, cursor: string | null, rewind?: boolean): Promise<ChangeSet>;
 }
 
 export interface SyncEngineOptions {
@@ -73,8 +75,10 @@ export class SyncEngine {
 
         let cursor = local?.cursor ?? null;
         let hasMore = true;
+        let first = true;
         while (hasMore) {
-          const page = await transport.getChanges(entity, cursor);
+          const page = await transport.getChanges(entity, cursor, first && cursor !== null);
+          first = false;
           const upserts = page.items
             .filter((i) => !i.deleted)
             .map((i) => ({ uuid: i.uuid, data: i.data, updatedAt: i.updatedAt }));

@@ -1,0 +1,32 @@
+.toolbar {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.skeletonRow {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.noResults {
+  padding: var(--space-6) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.detailGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (width >= 900px) {
+  .detailGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.notes {
+  white-space: pre-line;
+  color: var(--color-text-muted);
+}

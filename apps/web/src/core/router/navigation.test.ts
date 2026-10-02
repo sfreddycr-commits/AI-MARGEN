@@ -34,6 +34,22 @@ describe('navegación', () => {
     expect(primary).toEqual(['Inicio', 'Productos', 'Costos', 'IA']);
   });
 
+  it('oculta módulos sin permiso y limita al administrador de plataforma', () => {
+    const viewer = visibleNavItems(
+      NAV_ITEMS,
+      { isDev: false, showUpcoming: false },
+      { can: (p) => p !== 'ai.use' && p !== 'platform.admin', platformOnly: false },
+    );
+    expect(viewer.map((i) => i.id)).not.toContain('ai');
+    expect(viewer.map((i) => i.id)).not.toContain('admin');
+    const root = visibleNavItems(
+      NAV_ITEMS,
+      { isDev: false, showUpcoming: false },
+      { can: () => true, platformOnly: true },
+    );
+    expect(root.map((i) => i.id)).toEqual(['admin', 'system']);
+  });
+
   it('las rutas son únicas', () => {
     const routes = NAV_ITEMS.map((i) => i.to);
     expect(new Set(routes).size).toBe(routes.length);

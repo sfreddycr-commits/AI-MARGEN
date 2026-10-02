@@ -2,13 +2,27 @@ import { lazy } from 'react';
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
 import { AppShell } from '../shell/views/AppShell';
 import { MoreView } from '../shell/views/MoreView';
-import { SystemStatusView } from '../../modules/system/views/SystemStatusView';
 import { NotFoundView } from '../shell/views/NotFoundView';
+import { GuestOnly, RequireApp, RequireOnboarding } from '../session/views/Guards';
+import { SystemStatusView } from '../../modules/system/views/SystemStatusView';
+import { publicRoutes } from '../../modules/landing/routes';
+import { guestRoutes, tokenRoutes } from '../../modules/auth/routes';
+import { onboardingRoutes } from '../../modules/onboarding/routes';
+import { homeRoutes } from '../../modules/home/routes';
+import { ingredientsRoutes } from '../../modules/ingredients/routes';
+import { suppliersRoutes } from '../../modules/suppliers/routes';
+import { purchasesRoutes } from '../../modules/purchases/routes';
+import { productsRoutes } from '../../modules/products/routes';
+import { pricingRoutes } from '../../modules/pricing/routes';
+import { scenariosRoutes } from '../../modules/scenarios/routes';
+import { reportsRoutes } from '../../modules/reports/routes';
+import { aiRoutes } from '../../modules/ai/routes';
+import { settingsRoutes } from '../../modules/settings/routes';
+import { adminRoutes } from '../../modules/admin/routes';
 
 /**
- * Router. Cada módulo aporta sus rutas bajo /app; los módulos se cargan bajo demanda.
- * Etapa 1: shell, "Más", estado del sistema y catálogo de componentes (solo desarrollo).
- * La landing (Etapa 2) reemplazará la redirección de "/"; el guard de sesión llega en Etapa 3.
+ * Router. Cada módulo aporta sus rutas (archivo `routes.tsx` del módulo) y sus vistas se
+ * cargan bajo demanda. Las vistas se renderizan en el cliente; el backend solo entrega JSON.
  */
 // Condicional para que el catálogo de desarrollo no llegue al build de producción.
 const ComponentsView = import.meta.env.DEV
@@ -16,7 +30,17 @@ const ComponentsView = import.meta.env.DEV
   : null;
 
 const appChildren: RouteObject[] = [
-  { index: true, element: <Navigate to="/app/sistema" replace /> },
+  ...homeRoutes,
+  ...ingredientsRoutes,
+  ...suppliersRoutes,
+  ...purchasesRoutes,
+  ...productsRoutes,
+  ...pricingRoutes,
+  ...scenariosRoutes,
+  ...reportsRoutes,
+  ...aiRoutes,
+  ...settingsRoutes,
+  ...adminRoutes,
   { path: 'mas', element: <MoreView /> },
   { path: 'sistema', element: <SystemStatusView /> },
   ...(ComponentsView ? [{ path: 'componentes', element: <ComponentsView /> }] : []),
@@ -24,9 +48,16 @@ const appChildren: RouteObject[] = [
 ];
 
 export const routes: RouteObject[] = [
-  { path: '/', element: <Navigate to="/app" replace /> },
+  ...publicRoutes,
+  { element: <GuestOnly />, children: guestRoutes },
+  ...tokenRoutes,
+  { element: <RequireOnboarding />, children: onboardingRoutes },
   { path: '/estado', element: <Navigate to="/app/sistema" replace /> },
-  { path: '/app', element: <AppShell />, children: appChildren },
+  {
+    path: '/app',
+    element: <RequireApp />,
+    children: [{ element: <AppShell />, children: appChildren }],
+  },
   { path: '*', element: <NotFoundView standalone /> },
 ];
 

@@ -1,0 +1,40 @@
+.loader {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  background: var(--color-canvas);
+}
+
+.mark {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 32px;
+}
+
+.mark span {
+  width: 10px;
+  border-radius: var(--radius-xs);
+  background: var(--color-primary);
+  animation: pulse-bar 1s var(--easing) infinite alternate;
+}
+
+.mark span:first-child {
+  height: 18px;
+  background: var(--color-cost-bar);
+}
+
+.mark span:last-child {
+  height: 32px;
+  animation-delay: 0.2s;
+}
+
+@keyframes pulse-bar {
+  from {
+    transform: scaleY(0.6);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
